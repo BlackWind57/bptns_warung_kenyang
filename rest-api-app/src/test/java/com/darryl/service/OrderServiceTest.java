@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,10 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.darryl.bean.DrinkItem;
 import com.darryl.bean.FoodItem;
-import com.darryl.bean.MenuItem;
 import com.darryl.bean.Orders;
-import com.darryl.repository.DrinkItemRepository;
-import com.darryl.repository.FoodItemRepository;
 import com.darryl.repository.OrderRepository;
 import com.darryl.requestbean.Order;
 import com.darryl.requestbean.OrderItem;
@@ -40,12 +37,9 @@ class OrderServiceTest {
 	// Dependencies mocked
 	@Mock
 	private OrderRepository orderRepository;
-
+	
 	@Mock
-	private FoodItemRepository foodRepository;
-
-	@Mock
-	private DrinkItemRepository drinkRepository;
+	private MenuItemService menuItemService;
 
 	// Helper setup function
 	OrderItem addOrderItem (
@@ -75,11 +69,11 @@ class OrderServiceTest {
 	
 	@Test
 	final void testGetOrders() {
-		List<Orders> mockOrders = new ArrayList<>() {{
-			add ( new Orders ( 1 ) );
-			add ( new Orders ( 2 ) );
-			add ( new Orders ( 100 ) );
-		}};
+		List<Orders> mockOrders = Lists.newArrayList(
+			new Orders ( 1 ),
+			new Orders ( 2 ),
+			new Orders ( 100 )
+		);
 
 		Mockito.when(orderRepository.findAll())
 			.thenReturn( mockOrders );
@@ -95,8 +89,7 @@ class OrderServiceTest {
 	@Test 
 	final void testSaveOrder () {
 		// Sample created order from orderService
-		Orders createdOrder = new Orders ( 1L, 5, new ArrayList<>() {{
-			add ( 
+		Orders createdOrder = new Orders ( 1L, 5, Lists.newArrayList(
 				new com.darryl.bean.OrderItem(
 					1, 
 					new com.darryl.bean.FoodItem ( 
@@ -105,8 +98,7 @@ class OrderServiceTest {
 						"Snacks"),
 					null
 				)
-			);
-		}});
+		));
 		
 		Mockito.when(orderRepository.saveAndFlush(createdOrder))
 			.thenReturn (createdOrder);
@@ -127,8 +119,7 @@ class OrderServiceTest {
 	@Test 
 	final void testValidInputOfOrders () {
 		// Sample created order from orderService
-		Orders createdOrder = new Orders ( null, new ArrayList<>() {{
-			add ( 
+		Orders createdOrder = new Orders ( 5, Lists.newArrayList(
 				new com.darryl.bean.OrderItem(
 					1, 
 					new com.darryl.bean.FoodItem ( 
@@ -137,8 +128,7 @@ class OrderServiceTest {
 						"Snacks"),
 					null
 				)
-			);
-		}});
+		));
 		
 		Mockito.when(orderRepository.saveAndFlush(createdOrder))
 			.thenReturn (createdOrder);
@@ -161,26 +151,32 @@ class OrderServiceTest {
 	@Test
 	final void testAddOrderForOneFoodAndDrink() {
 		// Sample Order generated automatically to bean.request models
-		Order mockOrder = new Order ( 100, new ArrayList<>() {{
-			add ( addOrderItem ( "Chicken Curry with Rice", "food", 2 ) );
-			add ( addOrderItem ( "Ice Tea", "drink", 1 ) );
-		}});
+		com.darryl.requestbean.MenuItem menuItem1 =
+				new com.darryl.requestbean.MenuItem (
+						"Chicken Curry with Rice", "food");
+		com.darryl.requestbean.MenuItem menuItem2 =
+				new com.darryl.requestbean.MenuItem (
+						"Ice Tea", "drink");
+		Order mockOrder = new Order ( 100, Lists.newArrayList(
+			new OrderItem ( 2, menuItem1 ),
+			new OrderItem ( 1, menuItem2 )
+		));
 		
 		// Mock generated food item and drink item
-		Mockito.when(foodRepository.findByName("Chicken Curry with Rice"))
+		Mockito.when( menuItemService.getMenuItem( menuItem1 ) )
 			.thenReturn(
-				new FoodItem (
-					"Chicken Curry with Rice",
-					BigDecimal.valueOf(11),
-					"Main Course" )
-				);
+			new FoodItem (
+				"Chicken Curry with Rice",
+				BigDecimal.valueOf(11),
+				"Main Course" )
+			);
 		
-		Mockito.when(drinkRepository.findByName("Ice Tea"))
+		Mockito.when( menuItemService.getMenuItem( menuItem2 ) )
 			.thenReturn(
 				new DrinkItem (
 					"Ice Tea",
 					BigDecimal.valueOf(1) )
-				);		
+			);
 
 		Orders orderCreated = orderService.addOrders(mockOrder);
 		

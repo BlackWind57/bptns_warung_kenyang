@@ -1,4 +1,4 @@
-/*
+
 INSERT INTO menu_item ( menu_type, id, name, price, dish_type )
 VALUES ( 'Food', 1, 'Chicken Curry with Rice', 11, 'Main Course');
 
@@ -59,4 +59,4 @@ VALUES ('Drinks', 19, 'Juice', 2);
 INSERT INTO menu_item ( menu_type, id, name, price )
 VALUES ('Drinks', 20, 'Fruit punch', 3);
 
-*/
+

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.Valid;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotNull;
 

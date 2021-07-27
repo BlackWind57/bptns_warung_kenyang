@@ -1,7 +1,5 @@
 package com.darryl.requestbean;
 
-import javax.validation.constraints.NotEmpty;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,9 +24,9 @@ public class MenuItem {
 	}
 
 	public void setName(String name) {
-		if ( name == null ) {
+		if ( name == null || "".equals(name) ) {
 			throw new ResponseStatusException ( 
-					HttpStatus.BAD_REQUEST, "Missing name menu item");
+					HttpStatus.BAD_REQUEST, "Missing/Invalid name menu item");
 		}
 		this.name = name;
 	}
@@ -38,9 +36,9 @@ public class MenuItem {
 	}
 
 	public void setType(String type) {
-		if ( type == null ) {
+		if ( type == null || "".equals(type) ) {
 			throw new ResponseStatusException ( 
-					HttpStatus.BAD_REQUEST, "Missing type menu item");
+					HttpStatus.BAD_REQUEST, "Missing/Invalid type menu item");
 		}
 		this.type = type;
 	}	

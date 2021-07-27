@@ -11,16 +11,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import org.assertj.core.util.Lists;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Any;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -57,8 +54,7 @@ class OrderControllerTest {
 	@Test
 	@DisplayName("GET /orders success")
 	final void testGetAllOrders() throws Exception {
-		Orders order1 = new Orders ( 5, new ArrayList<>() {{
-			add (
+		Orders order1 = new Orders ( 5, Lists.newArrayList(
 				new com.darryl.bean.OrderItem(
 					1,
 					new com.darryl.bean.FoodItem (
@@ -67,10 +63,8 @@ class OrderControllerTest {
 						"Snacks"),
 					null
 				)
-			);
-		}});
-		Orders order2 = new Orders ( 6, new ArrayList<>() {{
-			add (
+		));
+		Orders order2 = new Orders ( 6, Lists.newArrayList(
 				new com.darryl.bean.OrderItem(
 					1,
 					new com.darryl.bean.DrinkItem (
@@ -79,8 +73,7 @@ class OrderControllerTest {
 					),
 					null
 				)
-			);
-		}});
+		));
 
 		Mockito.when( orderService.getAllOrders() )
 			.thenReturn( Lists.newArrayList( order1, order2 )
@@ -217,6 +210,8 @@ class OrderControllerTest {
 		ResponseStatusException e = assertThrows ( ResponseStatusException.class , () -> {
 			OrderItem orderItem = new OrderItem( 1, new MenuItem ( "Chips", null ) );
 			Order mockOrder = new Order ( 1, Lists.newArrayList( orderItem ) );
+			
+			assertEquals ( 1, mockOrder.getTableNumber() );
 		});
 		
 		assertEquals ( e.getStatus().toString(), "400 BAD_REQUEST");
@@ -225,6 +220,8 @@ class OrderControllerTest {
 		e = assertThrows ( ResponseStatusException.class , () -> {
 			OrderItem orderItem = new OrderItem( 1, new MenuItem ( null, "food" ) );
 			Order mockOrder = new Order ( 1, Lists.newArrayList( orderItem ) );
+			
+			assertEquals( 1, mockOrder.getTableNumber() );
 		});
 		
 		assertEquals ( e.getStatus().toString(), "400 BAD_REQUEST");
@@ -239,6 +236,8 @@ class OrderControllerTest {
 		ResponseStatusException e = assertThrows ( ResponseStatusException.class , () -> {
 			OrderItem orderItem = new OrderItem( 1, new MenuItem ( null, "food" ) );
 			Order mockOrder = new Order ( 1, Lists.newArrayList( orderItem ) );
+			
+			assertEquals( 1, mockOrder.getTableNumber() );
 		});
 		
 		assertEquals ( e.getStatus().toString(), "400 BAD_REQUEST");

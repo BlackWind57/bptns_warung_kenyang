@@ -4,10 +4,9 @@ import java.math.BigDecimal;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Entity
-@Table(name="Drink_Item")
+//@Table(name="Drink_Item")
 @DiscriminatorValue("Drinks")
 public class DrinkItem extends MenuItem {
 	

@@ -5,10 +5,9 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Entity
-@Table(name="Food_Item")
+//@Table(name="Food_Item")
 @DiscriminatorValue("Food")
 public class FoodItem extends MenuItem {
 	
