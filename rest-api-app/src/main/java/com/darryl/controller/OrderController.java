@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.darryl.bean.Orders;
@@ -45,7 +46,15 @@ public class OrderController {
 	public ResponseEntity<Object> addOrder( 
 			@Valid @RequestBody Order orders) {
 		
-		Orders savedOrder = service.saveOrder(orders);
+		Orders savedOrder = null;
+		try {
+			savedOrder = service.saveOrder(orders);
+		}
+		catch ( ResponseStatusException e ) {
+			return ResponseEntity
+					.status(HttpStatus.BAD_REQUEST)
+					.body(e.getLocalizedMessage());
+		}
 		
 		if ( savedOrder == null ) {
 			return ResponseEntity

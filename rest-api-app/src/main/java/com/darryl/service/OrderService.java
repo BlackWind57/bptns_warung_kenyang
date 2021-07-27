@@ -42,20 +42,15 @@ public class OrderService {
 			
 			com.darryl.bean.MenuItem item = 
 					menuItemService.getMenuItem(reqOrderItem.getMenuItem());			
-			
-			//logger.info(item.toString());
-			
+						
 			com.darryl.bean.OrderItem orderItem = 
 					new com.darryl.bean.OrderItem ( 
 							reqOrderItem.getQuantity(), 
 							item, 
 							order);
 			
-			//logger.info(orderItem.toString());
 			orderItems.add( orderItem );
 		}
-		//logger.info( "Final order items: \n"+ Arrays.toString( orderItems.toArray() ) );
-
 		order.setOrderItems(orderItems);
 		
 		return order;
