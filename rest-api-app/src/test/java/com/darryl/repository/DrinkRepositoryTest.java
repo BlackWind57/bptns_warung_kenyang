@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.darryl.bean.FoodItem;
+import com.darryl.bean.DrinkItem;
 import com.github.database.rider.core.api.connection.ConnectionHolder;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.junit5.DBUnitExtension;
@@ -19,42 +19,42 @@ import com.github.database.rider.junit5.DBUnitExtension;
 @ExtendWith(DBUnitExtension.class)
 @SpringBootTest
 @ActiveProfiles("test")
-class FoodRepositoryTest {
+class DrinkRepositoryTest {
 	
 	@Autowired
 	private DataSource dataSource;
 	
 	@Autowired
-	private FoodItemRepository repository;
-	
+	private DrinkItemRepository repository;
+
 	public ConnectionHolder getConnectionHolder() {
 		return () -> dataSource.getConnection();
 	}
-
+	
 	@Test
 	@DataSet("menu.yml")
-	// Please refer to src/test/resources/datasets/food.yml
+	// Please refer to src/test/resources/datasets/menu.yml
 	final void testFindByName() {
-		FoodItem item = repository.findByName("Chicken Curry with Rice");
-		assertEquals ( "Chicken Curry with Rice", item.getName() );
+		DrinkItem item = repository.findByName("Ice Lemon Tea");
+		assertEquals ( "Ice Lemon Tea", item.getName() );
 		
-		item = repository.findByName("Fried Chicken with Rice");
-		assertEquals ( "Fried Chicken with Rice", item.getName() );
+		item = repository.findByName("Ice Tea");
+		assertEquals ( "Ice Tea", item.getName() );
 	}
 	
 	@Test
 	@DataSet("menu.yml")
 	final void testFindByNameWithSubstringOfName() {
-		FoodItem item = repository.findByName("Curry");
-		assertEquals ( "Chicken Curry with Rice", item.getName(),
-				"Should return the Chicken Curry with Rice");
+		DrinkItem item = repository.findByName("Lemon");
+		assertEquals ( "Ice Lemon Tea", item.getName(),
+				"Should return the Ice Lemon Tea");
 	}
 	
 	@Test
 	@DataSet("menu.yml")
 	final void testFindByNameWithSubstringLowerCaseName () {
 		NullPointerException e = assertThrows ( NullPointerException.class , () -> {
-			FoodItem item = repository.findByName("curry");
+			DrinkItem item = repository.findByName("lemon");
 			assertNull ( item.getName(), 
 					"Should return null as the method did not allow to have case insensitive");
 		});
@@ -65,9 +65,9 @@ class FoodRepositoryTest {
 	@Test
 	@DataSet("menu.yml")
 	final void testFindByNameWithMoreThanOneResult () {
-		FoodItem item = repository.findByName("Rice");
-		assertEquals ("Chicken Curry with Rice", item.getName(),
-				"Should return the first occurence of Rice");
+		DrinkItem item = repository.findByName("Tea");
+		assertEquals ("Ice Lemon Tea", item.getName(),
+				"Should return the first occurence of Tea");
 	}
 	
 	@Test
@@ -75,9 +75,9 @@ class FoodRepositoryTest {
 	final void testFindByNameWithNullValue () {
 		NullPointerException e = assertThrows ( NullPointerException.class , () -> {
 	
-			FoodItem item = repository.findByName(null);
-			assertEquals ("Chicken Curry with Rice", item.getName(),
-					"Should return the first occurence of Rice");
+			DrinkItem item = repository.findByName(null);
+			assertEquals ("Ice Lemon Tea", item.getName(),
+					"Should return the first occurence of Tea");
 		});
 		
 		assertTrue ( e.getMessage().contains("is null") );
@@ -87,20 +87,21 @@ class FoodRepositoryTest {
 	@DataSet("menu.yml")
 	final void testFindByNameWithEmptyString () {
 		// This empty string check is done prior to querying the database
-		FoodItem item = repository.findByName("");
-		assertEquals ("Chicken Curry with Rice", item.getName(),
-				"Should return the first occurence of Rice");		
+		DrinkItem item = repository.findByName("");
+		assertEquals ("Ice Lemon Tea", item.getName(),
+				"Should return the first occurence of Tea");		
 	}
 	
 	@Test
 	@DataSet("menu.yml")
-	final void testFindByNameWithDrinkName () {
+	final void testFindByNameWithFoodName () {
 		NullPointerException e = assertThrows ( NullPointerException.class , () -> {
 
-			FoodItem item = repository.findByName("Ice Tea");
-			assertEquals ("Ice Tea", item.getName(),
-					"Should return the first occurence Ice Tea");
+			DrinkItem item = repository.findByName("Chicken Curry with Rice");
+			assertEquals ("Chicken Curry with Rice", item.getName(),
+					"Should return the first occurence Chicken Curry with Rice");
 		});
 		assertTrue ( e.getMessage().contains("is null") );
 	}
+
 }

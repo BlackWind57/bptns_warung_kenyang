@@ -9,4 +9,11 @@ menu_item:
    name: "Fried Chicken with Rice"
    price: 10.00
    dish_type: "Main Course"
- 
+ - menu_type: "Drinks"
+   id: 16
+   name: "Ice Lemon Tea"
+   price: 1.00
+ - menu_type: "Drinks"
+   id: 17
+   name: "Ice Tea"
+   price: 1.00

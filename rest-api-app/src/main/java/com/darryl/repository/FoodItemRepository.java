@@ -9,7 +9,9 @@ import com.darryl.bean.FoodItem;
 @Repository
 public interface FoodItemRepository extends JpaRepository<FoodItem, Long> {
 	
-	@Query ( value = "SELECT * FROM menu_item m WHERE m.name LIKE %?1% LIMIT 1",
+	@Query ( value = "SELECT * FROM menu_item m "
+			+ "WHERE m.name LIKE %?1% AND m.menu_type = 'Food' "
+			+ "LIMIT 1",
 			nativeQuery=true )
 	FoodItem findByName ( String name );
 }
