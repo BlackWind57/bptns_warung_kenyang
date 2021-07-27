@@ -1,0 +1,12 @@
+menu_item:
+ - menu_type: "Food"
+   id: 1
+   name: "Chicken Curry with Rice"
+   price: 11.00
+   dish_type: "Main Course"
+ - menu_type: "Food"
+   id: 2
+   name: "Fried Chicken with Rice"
+   price: 10.00
+   dish_type: "Main Course"
+ 

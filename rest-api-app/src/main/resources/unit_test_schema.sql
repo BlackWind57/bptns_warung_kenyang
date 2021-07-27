@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS menu_item (
+    id  INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    menu_type VARCHAR(31),
+    name VARCHAR(255) NOT NULL,
+    price DECIMAL(19,2) NOT NULL,
+    dish_type VARCHAR(25) NOT NULL
+);
