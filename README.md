@@ -84,7 +84,26 @@ the request payload format is
 
 Invalid/Incorrect/Missing placement of the key/value pairs will result in a 400 Bad Request exception
 
+## Running unit tests
+
+To run unit test, please head to application.properties at the src/main/resources
+and update the database to H2 from mySQL.
+
+I have provided with Run All Tests at the Run configuration on Eclipse if it is neccessary to see all the test cases running.
 
 
+## Troubleshooting
 
+If you encountered an issue while running docker-compose especially if it is a 
+connection with the server to download files, please redo the docker-compose command.
+
+If you encountered with an error of "Duplicate entry ...", please comment out the
+initial sql insertions code at src/main/resources/data.sql
+
+If you get an invalid menu item 400 BAD REQUEST and you entered the menu name correctly, please double check whether the menu items are there in the sql database. This can be done by uncomment the insertions code at src/main/resources/data.sql.
+
+
+## Tips
+
+Every time you made changes to the files of the rest-api-app, please rebuild the app by using the rest-api-app Maven Build on the Run Configurations and then run the docker-compose command
 
